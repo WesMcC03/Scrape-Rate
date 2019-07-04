@@ -3,9 +3,9 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
 var axios = require("axios");
 var cheerio = require("cheerio");
+var path = require("path");
 
 // Require all models
 var db = require("./models");
@@ -28,7 +28,22 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/ReviewData", { useNewUrlParser: true });
 
-// A GET route for scraping the ESPN website
+
+
+// Makes public folder static
+app.use(express.static(path.join(__dirname, '/public')));
+
+app.get("/", function (req, res) {
+res.sendFile(__dirname + '/index.html');
+
+});
+
+
+
+
+
+// API ROUTES
+//GET route for scraping the ESPN website
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
     axios.get("https://www.espn.com/nba/team/_/name/hou/houston-rockets").then(function(response) {
@@ -36,32 +51,39 @@ app.get("/scrape", function(req, res) {
       var $ = cheerio.load(response.data);
   
       // Grabs news feed content from Article
-      $("#news-feed-content article figure div").each(function(i, element) {
+      $(".text-container div h1").each(function(i, element) {
         // Save an empty result object
         var result = {};
   
         // Add the text and href of every link, and save them as properties of the result object
-        result.title = $(this)
+        result.headline = $(this)
           .children("a")
           .text();
-        result.link = $(this)
+        result.url = $(this)
           .children("a")
           .attr("href");
-  
-        db.Article.create(result)
-          .then(function(dbArticle) {
-    
-            console.log(dbArticle);
-          })
-          .catch(function(err) {
+        // result.summary = $(this)
+        //   .sibling("p")
+        //   .text();
 
-            console.log(err);
-          });
+          console.log(result);
+  
+        // db.Article.create(result)
+        //   .then(function(dbArticle) {
+    
+        //     console.log(dbArticle);
+        //   })
+        //   .catch(function(err) {
+
+        //     console.log(err);
+        //   });
       });
   
-      res.send("Scrape Complete");
+      res.send("Scrape is Complete!");
     });
   });
+
+
 
   app.get("/articles", function(req, res) {
     // Grab every document in the Articles collection

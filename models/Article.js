@@ -11,9 +11,9 @@ var RocketsSchema = new Schema({
     require: true
     },
 
-  summary: {
-    type: String,
-    require: true},
+  // summary: {
+  //   type: String,
+  //   require: true},
   url:  {
     type: String,
     require: true},
