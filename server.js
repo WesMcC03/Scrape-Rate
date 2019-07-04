@@ -37,11 +37,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.get("/", function (req, res) {
 res.sendFile(__dirname + '/index.html');
-
 });
-
-
-
 
 
 // API ROUTES
@@ -85,8 +81,6 @@ app.get("/scrape", function(req, res) {
     });
   });
 
-
-
   app.get("/articles", function(req, res) {
     // Grab every document in the Articles collection
     db.Article.find({})
@@ -109,7 +103,7 @@ app.get("/scrape", function(req, res) {
     process.env.MONGODB_URI ||
   
   "mongodb://root:Password1@ds347367.mlab.com:47367/heroku_h9gxp413", {
-  
+    useNewUrlParser: true 
   
   }
   );
