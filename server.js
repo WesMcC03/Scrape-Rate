@@ -110,7 +110,7 @@ app.get("/scrape", function(req, res) {
   
   "mongodb://root:Password1@ds347367.mlab.com:47367/heroku_h9gxp413", {
   
-  useMongoClient: true
+  
   }
   );
 
