@@ -25,8 +25,10 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/ReviewData", { useNewUrlParser: true });
+// // Connect to the Mongo DB
+// mongoose.connect(
+//   process.env.MONGODB_URI ||
+//   "mongodb://localhost/ReviewData", { useNewUrlParser: true });
 
 
 
@@ -98,6 +100,19 @@ app.get("/scrape", function(req, res) {
       });
   });
 
+
+  // Set up Promises with Mongoose
+  mongoose.Promise = global.Promise;
+
+  // Connect to Mongo DB
+  mongoose.connect(
+    process.env.MONGODB_URI ||
+  
+  "mongodb://root:Password1@ds347367.mlab.com:47367/heroku_h9gxp413", {
+  
+  useMongoClient: true
+  }
+  );
 
   // Start the server
 app.listen(PORT, function() {
