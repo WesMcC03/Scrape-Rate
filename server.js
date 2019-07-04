@@ -39,6 +39,12 @@ app.get("/", function (req, res) {
 res.sendFile(__dirname + '/index.html');
 });
 
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "/../public/index.html"));
+});
+
+
+
 
 // API ROUTES
 //GET route for scraping the ESPN website
