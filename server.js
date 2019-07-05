@@ -6,11 +6,12 @@ var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
 var path = require("path");
+require("dotenv").config();
 
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000
 
 // Initialize Express
 var app = express();
@@ -39,9 +40,9 @@ app.get("/", function (req, res) {
 res.sendFile(__dirname + '/index.html');
 });
 
-app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "/../public/index.html"));
-});
+// app.get("*", function(req, res) {
+//   res.sendFile(path.join(__dirname, "/index.html"));
+// });
 
 
 
