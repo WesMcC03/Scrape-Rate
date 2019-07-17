@@ -27,9 +27,9 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // // Connect to the Mongo DB
-// mongoose.connect(
-//   process.env.MONGODB_URI ||
-//   "mongodb://localhost/ReviewData", { useNewUrlParser: true });
+mongoose.connect(
+  process.env.MONGODB_URI ||
+  "mongodb://localhost/ReviewData", { useNewUrlParser: true });
 
 
 
@@ -53,7 +53,11 @@ app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
     axios.get("https://www.espn.com/nba/team/_/name/hou/houston-rockets").then(function(response) {
  
+
+
       var $ = cheerio.load(response.data);
+
+      // console.log(response.data)
   
       // Grabs news feed content from Article
       $(".text-container div h1").each(function(i, element) {
@@ -70,21 +74,22 @@ app.get("/scrape", function(req, res) {
         // result.summary = $(this)
         //   .sibling("p")
         //   .text();
+        
 
-          console.log(result);
+          console.log(result.url);
   
-        // db.Article.create(result)
-        //   .then(function(dbArticle) {
+        db.Article.create(result)
+          .then(function(dbArticle) {
     
-        //     console.log(dbArticle);
-        //   })
-        //   .catch(function(err) {
+            console.log(dbArticle);
+          })
+          .catch(function(err) {
 
-        //     console.log(err);
-        //   });
+            console.log(err);
+          });
       });
   
-      res.send("Scrape is Complete!");
+      res.send("Scrape is Done!");
     });
   });
 
@@ -106,14 +111,14 @@ app.get("/scrape", function(req, res) {
   mongoose.Promise = global.Promise;
 
   // Connect to Mongo DB
-  mongoose.connect(
-    process.env.MONGODB_URI ||
+  // mongoose.connect(
+  //   process.env.MONGODB_URI ||
   
-  "mongodb://root:Password1@ds347367.mlab.com:47367/heroku_h9gxp413", {
-    useNewUrlParser: true 
+  // "mongodb://root:Password1@ds347367.mlab.com:47367/heroku_h9gxp413", {
+  //   useNewUrlParser: true 
   
-  }
-  );
+  // }
+  // );
 
   // Start the server
 app.listen(PORT, function() {

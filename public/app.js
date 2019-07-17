@@ -7,4 +7,4 @@ $.getJSON("/articles", function(data) {
     }
   });
 
-//   "<p data-id='" + data[i]._id + "'>" +
+//   "<p data-id='" + data[i]._id + "'>
